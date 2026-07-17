@@ -1,14 +1,15 @@
 import React from "react";
 import InputField from "../../components/InputField";
 import Button from "../../components/Button";
-import { Link } from "react-router-dom";
+import { Link , useNavigate} from "react-router-dom";
 import { useRef, useState } from "react";
-import { ToastContainer,toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { ClipLoader } from "react-spinners";
 
-function Login() {
+function Login({setIsLoggedIn}) {
   const email = useRef(null);
   const password = useRef(null);
+  const navigate = useNavigate();
 
   const [isLoading,setIsLoading] = useState(false);
 
@@ -33,8 +34,8 @@ function Login() {
       .then((data) => {
         if(data.success){
             toast.success(data.message);
-            email.current.value='';
-            password.current.value='';
+            setIsLoggedIn(true);
+            navigate('/dashboard');
         }else{
             toast.error(data.message)
         }
@@ -84,7 +85,6 @@ function Login() {
           Sign up
         </Link>
       </p>
-      <ToastContainer/>
     </div>
   );
 }

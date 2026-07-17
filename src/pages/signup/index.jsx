@@ -3,7 +3,7 @@ import InputField from "../../components/InputField";
 import Button from "../../components/Button";
 import { data, Link } from "react-router-dom";
 import { useRef } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { ClipLoader } from "react-spinners";
 
 function Signup() {
@@ -102,7 +102,6 @@ function Signup() {
           Login
         </Link>
       </p>
-      <ToastContainer />
       
     </div>
   );
