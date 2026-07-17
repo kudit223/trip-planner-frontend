@@ -1,7 +1,7 @@
 function InputField({ label, placeholder, id, type, ref }) {
   return (
     <div className="mb-3">
-      <label className="form-label" htmlFor={id}>
+      <label className="form-label mb-0" htmlFor={id}>
         {label}
       </label>
       <input

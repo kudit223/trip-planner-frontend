@@ -1,9 +1,11 @@
 import React from "react";
 import Button from "../../components/Button";
+import CreateRoom from "../create-room";
 
 function Dashboard() {
   return (
     <div>
+      <CreateRoom/>
       <div>
         <span>Your rooms</span>
         <Button
@@ -11,6 +13,8 @@ function Dashboard() {
           buttonColor="primary"
           buttonName="+ Create room"
           borderRadius={12}
+          dataBsToggle = 'modal'
+          dataBsTarget = '#createRoomModal'
         />
         <Button
           id="joinRoomBtn"
