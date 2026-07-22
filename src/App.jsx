@@ -7,10 +7,21 @@ import Dashboard from "./pages/dashboard";
 import { ClipLoader } from "react-spinners";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
+import ChatRoom from "./pages/chat-room";
+import { io } from "socket.io-client";
+import { createContext } from "react";
+
+export const socketContext = createContext();
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoading,setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  let socket;
+
+  //socket.io connection
+  if (isLoggedIn) {
+    socket = io("http://localhost:7000", { withCredentials: true });
+  }
 
   useEffect(() => {
     fetch("http://localhost:7000/user/me", { credentials: "include" })
@@ -22,27 +33,41 @@ function App() {
       })
       .catch((error) => {
         console.log(error);
-      }).finally(()=>{
+      })
+      .finally(() => {
         setIsLoading(false);
       });
   }, []);
 
   return (
-    <div className="mainContainer d-flex justify-content-center align-items-center">
-      <ToastContainer/>
-      <Routes>
-        <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute isLoggedIn={isLoggedIn} isLoading={isLoading}>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-    </div>
+    <socketContext.Provider value={socket}>
+      <div className="mainContainer d-flex justify-content-center align-items-center">
+        <ToastContainer />
+        <Routes>
+          <Route
+            path="/login"
+            element={<Login setIsLoggedIn={setIsLoggedIn} />}
+          />
+          <Route path="/signup" element={<Signup />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute isLoggedIn={isLoggedIn} isLoading={isLoading}>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/chat-room"
+            element={
+              <ProtectedRoute isLoading={isLoading} isLoggedIn={isLoggedIn}>
+                <ChatRoom />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </div>
+    </socketContext.Provider>
   );
 }
 
